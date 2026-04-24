@@ -9,6 +9,8 @@ from typing import Any
 
 import joblib
 
+from backend.models.code_models import CodePredictionModel, CodeRecommendationModel
+
 
 class ModelLoadError(RuntimeError):
     """Raised when a required pre-trained model cannot be loaded."""
@@ -65,6 +67,10 @@ def demo_mode_enabled() -> bool:
     return os.getenv("ANNADATA_DEMO_MODE", "").lower() in {"1", "true", "yes", "on"}
 
 
+def model_backend() -> str:
+    return os.getenv("ANNADATA_MODEL_BACKEND", "code").strip().lower()
+
+
 def load_pickle_model(path: Path) -> Any:
     if not path.exists():
         raise ModelLoadError(
@@ -84,6 +90,12 @@ def get_model_bundle() -> ModelBundle:
         return ModelBundle(
             recommendation_model=DemoRecommendationModel(),
             prediction_model=DemoPredictionModel(),
+        )
+
+    if model_backend() == "code":
+        return ModelBundle(
+            recommendation_model=CodeRecommendationModel(),
+            prediction_model=CodePredictionModel(),
         )
 
     directory = model_dir()

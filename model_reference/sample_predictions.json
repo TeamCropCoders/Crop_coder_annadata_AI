@@ -1,0 +1,78 @@
+{
+  "model_mode_example": {
+    "input": {
+      "soil": "Loamy",
+      "location": "Agra, Uttar Pradesh",
+      "season": "Rabi",
+      "current_crop": "Wheat"
+    },
+    "output_shape": {
+      "recommended": [
+        {
+          "rank": 1,
+          "crop": "Potato",
+          "compatibility_score": 67.5,
+          "price": 550.0,
+          "yield": 36.9,
+          "risk": "Medium",
+          "production": 36.9,
+          "sustainability_score": 90.0,
+          "expected_profit": 20295.0
+        }
+      ],
+      "current_crop": {
+        "crop": "Wheat",
+        "price": 2400.0,
+        "yield": 3.79,
+        "risk": "Low",
+        "production": 3.79,
+        "sustainability_score": 98.0,
+        "expected_profit": 9096.0
+      },
+      "best_crop": "Potato",
+      "insight": "Switching from Wheat to Potato may increase expected profit by about 123.1% under the current conditions.",
+      "sustainability": "Potato is a practical Rabi option for loamy soil when nutrients are managed well.",
+      "voice_text": "Namaste. Based on your soil, location and season, Potato looks like the best suggestion.",
+      "comparison": [],
+      "data_source": "model"
+    }
+  },
+  "knowledge_base_mode_example": {
+    "input": {
+      "soil": "Loamy",
+      "location": "Agra, Uttar Pradesh",
+      "season": "Rabi",
+      "current_crop": "Wheat"
+    },
+    "output_shape": {
+      "recommended": [
+        {
+          "rank": 1,
+          "crop": "Potato",
+          "compatibility_score": 67.5,
+          "price": 550.0,
+          "yield": 36.9,
+          "risk": "Medium",
+          "production": 36.9,
+          "sustainability_score": 90.0,
+          "expected_profit": 20295.0
+        }
+      ],
+      "current_crop": {
+        "crop": "Wheat",
+        "price": 2400.0,
+        "yield": 3.79,
+        "risk": "Low",
+        "production": 3.79,
+        "sustainability_score": 98.0,
+        "expected_profit": 9096.0
+      },
+      "best_crop": "Potato",
+      "insight": "Switching from Wheat to Potato may increase expected profit by about 123.1% under the current conditions.",
+      "sustainability": "Potato is a practical Rabi option for loamy soil when nutrients are managed well.",
+      "voice_text": "Namaste. Based on your soil, location and season, Potato looks like the best suggestion.",
+      "comparison": [],
+      "data_source": "knowledge_base"
+    }
+  }
+}

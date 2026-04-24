@@ -1,0 +1,38 @@
+{
+  "model_loading_errors": [
+    {
+      "name": "Missing recommendation model",
+      "where": "backend/models/load_models.py",
+      "message": "Missing required model file: backend/models/artifacts/recommendation_model.pkl. Place the provided .pkl model here or set ANNADATA_MODEL_DIR.",
+      "fallback_behavior": "Switch to knowledge base"
+    },
+    {
+      "name": "Missing prediction model",
+      "where": "backend/models/load_models.py",
+      "message": "Missing required model file: backend/models/artifacts/prediction_model.pkl. Place the provided .pkl model here or set ANNADATA_MODEL_DIR.",
+      "fallback_behavior": "Switch to knowledge base"
+    }
+  ],
+  "prediction_errors": [
+    {
+      "name": "Unsupported recommendation interface",
+      "where": "backend/routes/analyze.py",
+      "message": "recommendation_model.pkl must expose recommend(), predict_proba(), or predict()."
+    },
+    {
+      "name": "Unsupported prediction interface",
+      "where": "backend/routes/analyze.py",
+      "message": "prediction_model.pkl must expose predict_market() or predict()."
+    },
+    {
+      "name": "Malformed prediction output",
+      "where": "backend/services/intelligence.py",
+      "message": "Prediction model output must include price, yield, and risk."
+    },
+    {
+      "name": "Empty recommendation output",
+      "where": "backend/services/intelligence.py",
+      "message": "Recommendation model returned no crops."
+    }
+  ]
+}

@@ -1,10 +1,16 @@
 from __future__ import annotations
 
 import csv
+import json
+import os
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
 from typing import Any
+import urllib.parse
+import urllib.request
+
+from scripts.data_gov_config import get_variety_wise_api_key
 
 
 YIELD_DATA_PATH = Path("data/clean/latest_yield_features.csv")
@@ -40,6 +46,9 @@ BASELINE_PRICES = {
     "rice": 2550.0,
     "sugarcane": 360.0,
 }
+
+MANDI_API_RESOURCE_ID = "9ef84268-d588-465a-a308-a864a43d0070"
+MANDI_API_BASE_URL = f"https://api.data.gov.in/resource/{MANDI_API_RESOURCE_ID}"
 
 
 @dataclass(frozen=True)
@@ -358,7 +367,11 @@ def recommend_from_knowledge_base(soil: str, location: str, season: str, top_n: 
     return recommendations
 
 
-def estimate_price(crop: str, state: str | None, district: str | None) -> float:
+def estimate_price(crop: str, state: str | None, district: str | None) -> tuple[float, str]:
+    live_price = fetch_live_mandi_price(crop, state, district)
+    if live_price is not None:
+        return live_price, "live_api"
+
     normalized_crop = _normalize_text(crop)
     mandi_rows = load_mandi_rows()
     matches = [
@@ -373,11 +386,74 @@ def estimate_price(crop: str, state: str | None, district: str | None) -> float:
         ]
         if district_matches:
             avg = sum(float(row["modal_price"]) for row in district_matches) / len(district_matches)
-            return round(avg, 2)
+            return round(avg, 2), "local_snapshot"
     if matches:
         avg = sum(float(row["modal_price"]) for row in matches) / len(matches)
-        return round(avg, 2)
-    return BASELINE_PRICES.get(normalized_crop, 1800.0)
+        return round(avg, 2), "local_snapshot"
+    return BASELINE_PRICES.get(normalized_crop, 1800.0), "baseline"
+
+
+@lru_cache(maxsize=256)
+def fetch_live_mandi_price(crop: str, state: str | None, district: str | None) -> float | None:
+    api_key = os.getenv("DATA_GOV_API_KEY") or os.getenv("VARIETY_WISE_API_KEY")
+    if not api_key:
+        return None
+
+    try:
+        records = fetch_live_mandi_records(
+            api_key=get_variety_wise_api_key(api_key),
+            commodity=crop,
+            state=state,
+            district=district,
+            limit=10,
+        )
+        district_prices = [
+            float(row["modal_price"])
+            for row in records
+            if row.get("modal_price")
+            and (district is None or _normalize_text(row.get("district", "")) == district)
+            and (state is None or _normalize_state(row.get("state", "")) == state)
+        ]
+        if district_prices:
+            return round(sum(district_prices) / len(district_prices), 2)
+
+        prices = [float(row["modal_price"]) for row in records if row.get("modal_price")]
+        if prices:
+            return round(sum(prices) / len(prices), 2)
+    except Exception:
+        return None
+
+    return None
+
+
+def fetch_live_mandi_records(
+    api_key: str,
+    commodity: str,
+    state: str | None,
+    district: str | None,
+    limit: int = 10,
+) -> list[dict[str, Any]]:
+    params = {
+        "api-key": api_key,
+        "format": "json",
+        "limit": str(limit),
+        "filters[commodity]": commodity,
+    }
+    if district:
+        params["filters[district]"] = district.title()
+    if state:
+        params["filters[state]"] = state.title()
+
+    url = f"{MANDI_API_BASE_URL}?{urllib.parse.urlencode(params)}"
+    request = urllib.request.Request(
+        url,
+        headers={
+            "User-Agent": "AnnadataAI/1.0"
+        },
+    )
+    with urllib.request.urlopen(request, timeout=40) as response:
+        payload = json.loads(response.read().decode("utf-8"))
+    return payload.get("records", [])
 
 
 def estimate_yield(crop: str, location: str, season: str) -> float:
@@ -465,8 +541,10 @@ def sustainability_score(crop: str, soil: str, season: str, location: str) -> fl
 
 def predict_from_knowledge_base(crop: str, location: str, season: str, soil: str) -> dict[str, Any]:
     state, district = resolve_location(location)
+    price, price_source = estimate_price(crop, state, district)
     return {
-        "price": estimate_price(crop, state, district),
+        "price": price,
+        "price_source": price_source,
         "yield": estimate_yield(crop, location, season),
         "production": estimate_production(crop, location, season),
         "risk": estimate_risk(crop, location, season),

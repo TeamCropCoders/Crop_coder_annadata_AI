@@ -26,6 +26,7 @@ class AnalyzeRequest(BaseModel):
     location: str = Field(..., examples=["UP"])
     season: str = Field(..., examples=["kharif"])
     current_crop: str = Field(..., examples=["Wheat"])
+    language: str = Field("en", examples=["en", "hi", "pa"])
 
 
 class AnalyzeResponse(BaseModel):
@@ -35,6 +36,9 @@ class AnalyzeResponse(BaseModel):
     insight: str
     sustainability: str
     voice_text: str
+    confidence_score: float
+    confidence_label: str
+    confidence_reason: str
     comparison: list[dict[str, Any]]
     data_source: str | None = None
 
@@ -156,8 +160,9 @@ def analyze(request: AnalyzeRequest) -> dict[str, Any]:
             soil=request.soil,
             location=request.location,
             season=request.season,
+            language=request.language,
+            data_source="knowledge_base" if use_knowledge_base else "model",
         )
-        response["data_source"] = "knowledge_base" if use_knowledge_base else "model"
         return response
     except Exception as exc:
         raise HTTPException(
