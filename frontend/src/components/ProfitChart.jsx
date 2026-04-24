@@ -1,3 +1,5 @@
+import { SunIcon } from "./Icons.jsx";
+
 export default function ProfitChart({ rows }) {
   const maxProfit = Math.max(...rows.map((row) => row.expected_profit), 1);
 
@@ -8,7 +10,7 @@ export default function ProfitChart({ rows }) {
           <h2 className="text-xl font-bold text-mud">Expected Profit</h2>
           <p className="text-sm text-mud/60">Profit shown in INR per hectare</p>
         </div>
-        <span className="text-sm font-bold uppercase tracking-[0.15em]" aria-hidden="true">Sun</span>
+        <SunIcon className="h-5 w-5 text-harvest" />
       </div>
 
       <div className="space-y-4">

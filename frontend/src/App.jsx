@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { SunIcon } from "./components/Icons.jsx";
 import Navbar from "./components/Navbar.jsx";
 import InputForm from "./components/InputForm.jsx";
 import RecommendationCard from "./components/RecommendationCard.jsx";
@@ -80,7 +81,9 @@ export default function App() {
 
           {!loading && !result && !error && (
             <div className="rounded-[2rem] bg-white/75 p-8 shadow-soft">
-              <p className="text-5xl font-bold text-harvest" aria-hidden="true">Sun</p>
+              <div className="text-harvest">
+                <SunIcon className="h-10 w-10" />
+              </div>
               <h2 className="mt-4 text-2xl font-bold text-leaf">Ready for your first analysis</h2>
               <p className="mt-2 text-mud/70">
                 Enter soil, location, season, and your current crop to see the best suggestion.

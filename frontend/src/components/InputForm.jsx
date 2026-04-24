@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { CropIcon } from "./Icons.jsx";
 import {
   cropOptions,
   locationOptions,
@@ -32,10 +33,10 @@ export default function InputForm({ onSubmit, disabled }) {
     <form onSubmit={submit} className="rounded-[2rem] bg-white p-6 shadow-soft ring-1 ring-mud/10">
       <div className="mb-5 flex items-center gap-3">
         <span
-          className="grid h-10 w-10 place-items-center rounded-2xl bg-field text-xs font-bold uppercase tracking-[0.15em] text-leaf"
+          className="grid h-10 w-10 place-items-center rounded-2xl bg-field text-leaf"
           aria-hidden="true"
         >
-          Crop
+          <CropIcon className="h-5 w-5" />
         </span>
         <div>
           <h2 className="text-xl font-bold text-mud">Your Crop</h2>

@@ -1,3 +1,5 @@
+import { LeafIcon } from "./Icons.jsx";
+
 export default function RecommendationCard({ crop, bestCrop }) {
   const isBest = crop.crop.toLowerCase() === bestCrop.toLowerCase();
 
@@ -7,7 +9,7 @@ export default function RecommendationCard({ crop, bestCrop }) {
         <span className={`rounded-full px-3 py-1 text-xs font-bold ${isBest ? "bg-beige text-leaf" : "bg-field text-leaf"}`}>
           {isBest ? "Best Suggestion" : `Rank ${crop.rank}`}
         </span>
-        <span className="text-sm font-bold uppercase tracking-[0.15em]" aria-hidden="true">Leaf</span>
+        <LeafIcon className={`h-5 w-5 ${isBest ? "text-beige" : "text-leaf"}`} />
       </div>
       <h3 className="text-2xl font-bold">{crop.crop}</h3>
       <p className={isBest ? "text-beige/90" : "text-mud/60"}>Compatibility</p>
