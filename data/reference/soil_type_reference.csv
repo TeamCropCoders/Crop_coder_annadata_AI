@@ -1,0 +1,6 @@
+soil_type,n_value,p_value,k_value,ph_value,temperature_c,humidity_pct
+Loamy,75,38,55,6.7,24,60
+Black,90,42,85,7.2,26,58
+Red,55,28,40,6.1,27,55
+Alluvial,70,35,50,6.8,25,62
+Laterite,45,20,35,5.8,26,70

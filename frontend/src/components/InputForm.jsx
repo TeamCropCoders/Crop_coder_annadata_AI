@@ -1,9 +1,15 @@
 import { useState } from "react";
+import {
+  cropOptions,
+  locationOptions,
+  seasonOptions,
+  soilOptions
+} from "../data/formOptions.js";
 
 const initialForm = {
-  soil: "loamy",
-  location: "UP",
-  season: "kharif",
+  soil: "Loamy",
+  location: "Agra, Uttar Pradesh",
+  season: "Rabi",
   current_crop: "Wheat"
 };
 
@@ -25,8 +31,11 @@ export default function InputForm({ onSubmit, disabled }) {
   return (
     <form onSubmit={submit} className="rounded-[2rem] bg-white p-6 shadow-soft ring-1 ring-mud/10">
       <div className="mb-5 flex items-center gap-3">
-        <span className="grid h-10 w-10 place-items-center rounded-2xl bg-field text-xl" aria-hidden="true">
-          🌾
+        <span
+          className="grid h-10 w-10 place-items-center rounded-2xl bg-field text-xs font-bold uppercase tracking-[0.15em] text-leaf"
+          aria-hidden="true"
+        >
+          Crop
         </span>
         <div>
           <h2 className="text-xl font-bold text-mud">Your Crop</h2>
@@ -35,10 +44,38 @@ export default function InputForm({ onSubmit, disabled }) {
       </div>
 
       <div className="grid gap-4">
-        <Field label="Soil Type" name="soil" value={form.soil} onChange={updateField} />
-        <Field label="Location" name="location" value={form.location} onChange={updateField} />
-        <Field label="Season" name="season" value={form.season} onChange={updateField} />
-        <Field label="Current Crop" name="current_crop" value={form.current_crop} onChange={updateField} />
+        <SelectField
+          label="Soil Type"
+          name="soil"
+          value={form.soil}
+          onChange={updateField}
+          options={soilOptions}
+          hint="Choose the soil type shared by the farmer."
+        />
+        <SelectField
+          label="Location"
+          name="location"
+          value={form.location}
+          onChange={updateField}
+          options={locationOptions}
+          hint="Use district and state, for example Agra, Uttar Pradesh."
+        />
+        <SelectField
+          label="Season"
+          name="season"
+          value={form.season}
+          onChange={updateField}
+          options={seasonOptions}
+          hint="Pick the preferred farming season."
+        />
+        <SelectField
+          label="Current Crop"
+          name="current_crop"
+          value={form.current_crop}
+          onChange={updateField}
+          options={cropOptions}
+          hint="Suggestions come from the crop table and the knowledge base."
+        />
       </div>
 
       <button
@@ -52,16 +89,23 @@ export default function InputForm({ onSubmit, disabled }) {
   );
 }
 
-function Field({ label, name, value, onChange }) {
+function SelectField({ label, name, value, onChange, options, hint }) {
   return (
     <label className="block">
       <span className="mb-2 block text-sm font-bold text-mud">{label}</span>
-      <input
+      <select
         name={name}
         value={value}
         onChange={onChange}
         className="w-full rounded-2xl border border-mud/15 bg-beige/60 px-4 py-3 text-mud outline-none transition focus:border-leaf focus:bg-white focus:ring-4 focus:ring-leaf/10"
-      />
+      >
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+      <span className="mt-2 block text-xs text-mud/60">{hint}</span>
     </label>
   );
 }

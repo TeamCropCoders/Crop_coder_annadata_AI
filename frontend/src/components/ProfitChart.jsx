@@ -6,9 +6,9 @@ export default function ProfitChart({ rows }) {
       <div className="mb-5 flex items-center justify-between">
         <div>
           <h2 className="text-xl font-bold text-mud">Expected Profit</h2>
-          <p className="text-sm text-mud/60">Simple crop-wise comparison</p>
+          <p className="text-sm text-mud/60">Profit shown in INR per hectare</p>
         </div>
-        <span className="text-2xl" aria-hidden="true">☀</span>
+        <span className="text-sm font-bold uppercase tracking-[0.15em]" aria-hidden="true">Sun</span>
       </div>
 
       <div className="space-y-4">
@@ -16,7 +16,7 @@ export default function ProfitChart({ rows }) {
           <div key={row.crop}>
             <div className="mb-1 flex justify-between text-sm">
               <span className="font-bold">{row.crop}</span>
-              <span>{formatNumber(row.expected_profit)}</span>
+              <span>{formatCurrency(row.expected_profit)} / hectare</span>
             </div>
             <div className="h-4 overflow-hidden rounded-full bg-field">
               <div
@@ -31,8 +31,6 @@ export default function ProfitChart({ rows }) {
   );
 }
 
-function formatNumber(value) {
-  return new Intl.NumberFormat("en-IN", {
-    maximumFractionDigits: 0
-  }).format(value);
+function formatCurrency(value) {
+  return `INR ${new Intl.NumberFormat("en-IN", { maximumFractionDigits: 0 }).format(value)}`;
 }

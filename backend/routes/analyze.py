@@ -120,6 +120,7 @@ def analyze(request: AnalyzeRequest) -> dict[str, Any]:
                 crop=request.current_crop,
                 location=request.location,
                 season=request.season,
+                soil=request.soil,
             )
             if use_knowledge_base
             else predict_crop_market(
@@ -138,6 +139,7 @@ def analyze(request: AnalyzeRequest) -> dict[str, Any]:
                     crop=crop,
                     location=request.location,
                     season=request.season,
+                    soil=request.soil,
                 )
                 if use_knowledge_base
                 else predict_crop_market(

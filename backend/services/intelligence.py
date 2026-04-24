@@ -10,6 +10,8 @@ class CropPrediction:
     price: float
     yield_value: float
     risk: str
+    production: float = 0.0
+    sustainability_score: float | None = None
 
     @property
     def profit(self) -> float:
@@ -74,8 +76,12 @@ def normalize_prediction_output(crop: str, raw: Any) -> CropPrediction:
         price = raw.get("price") or raw.get("predicted_price") or raw.get("modal_price")
         yield_value = raw.get("yield") or raw.get("predicted_yield") or raw.get("yield_value")
         risk = raw.get("risk") or raw.get("risk_level") or "Medium"
+        production = raw.get("production") or raw.get("predicted_production") or raw.get("production_value") or yield_value
+        sustainability_score = raw.get("sustainability_score")
     elif isinstance(raw, (tuple, list)) and len(raw) >= 3:
         price, yield_value, risk = raw[0], raw[1], raw[2]
+        production = raw[3] if len(raw) >= 4 else yield_value
+        sustainability_score = raw[4] if len(raw) >= 5 else None
     else:
         raise ValueError(
             "Prediction model output must include price, yield, and risk."
@@ -86,6 +92,8 @@ def normalize_prediction_output(crop: str, raw: Any) -> CropPrediction:
         price=round(float(price), 2),
         yield_value=round(float(yield_value), 2),
         risk=normalize_risk(risk),
+        production=round(float(production), 2),
+        sustainability_score=None if sustainability_score is None else round(float(sustainability_score), 2),
     )
 
 
@@ -123,6 +131,8 @@ def build_intelligence_response(
             "price": item.price,
             "yield": item.yield_value,
             "risk": item.risk,
+            "production": item.production,
+            "sustainability_score": item.sustainability_score,
             "expected_profit": item.profit,
             "is_current": item.crop.lower() == current_crop.lower(),
             "is_best": item.crop.lower() == best.crop.lower(),
@@ -145,6 +155,8 @@ def build_intelligence_response(
             "price": current.price,
             "yield": current.yield_value,
             "risk": current.risk,
+            "production": current.production,
+            "sustainability_score": current.sustainability_score,
             "expected_profit": current.profit,
         },
         "best_crop": best.crop,
@@ -228,6 +240,8 @@ def enrich_recommendations(
                     "price": prediction.price,
                     "yield": prediction.yield_value,
                     "risk": prediction.risk,
+                    "production": prediction.production,
+                    "sustainability_score": prediction.sustainability_score,
                     "expected_profit": prediction.profit,
                 }
             )

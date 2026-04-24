@@ -80,7 +80,7 @@ export default function App() {
 
           {!loading && !result && !error && (
             <div className="rounded-[2rem] bg-white/75 p-8 shadow-soft">
-              <p className="text-5xl" aria-hidden="true">☀</p>
+              <p className="text-5xl font-bold text-harvest" aria-hidden="true">Sun</p>
               <h2 className="mt-4 text-2xl font-bold text-leaf">Ready for your first analysis</h2>
               <p className="mt-2 text-mud/70">
                 Enter soil, location, season, and your current crop to see the best suggestion.
