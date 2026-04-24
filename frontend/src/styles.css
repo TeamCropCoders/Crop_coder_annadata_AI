@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at top left, rgba(46, 125, 50, 0.18), transparent 34rem),
+    linear-gradient(135deg, #f5f5dc 0%, #f1ead0 52%, #dde7c7 100%);
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}

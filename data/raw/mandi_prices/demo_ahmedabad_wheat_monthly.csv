@@ -1,0 +1,3 @@
+state,district,market,commodity,variety,grade,arrival_date,min_price,max_price,modal_price,period,avg_modal_price
+Gujarat,Ahmedabad,Sanad APMC,Wheat,Sharbati,FAQ,21/04/2026,2430,2430,2430,monthly,2427.5
+Gujarat,Ahmedabad,Dholka APMC,Wheat,Lokwan Gujrat,Grade Range-2,21/04/2026,2025,2485,2425,monthly,2427.5

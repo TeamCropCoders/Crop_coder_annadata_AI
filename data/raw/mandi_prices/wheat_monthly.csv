@@ -1,0 +1,11 @@
+state,district,market,commodity,variety,grade,arrival_date,min_price,max_price,modal_price,period,avg_modal_price
+Gujarat,Ahmedabad,Dholka APMC,Wheat,Lokwan Gujrat,Grade Range-2,21/04/2026,2025,2485,2425,monthly,2481.43
+Gujarat,Mehsana,Kadi APMC,Wheat,Other,FAQ,21/04/2026,2200,2900,2350,monthly,2481.43
+Maharashtra,Thane,Palghar APMC,Wheat,Other,FAQ,21/04/2026,3200,3200,3200,monthly,2481.43
+Uttar Pradesh,Farukhabad,Kayamganj APMC,Wheat,Dara,FAQ,21/04/2026,2585,2585,2585,monthly,2481.43
+Uttar Pradesh,Kasganj,Kasganj APMC,Wheat,PBW-343,FAQ,21/04/2026,2380,2380,2380,monthly,2481.43
+Uttar Pradesh,Balrampur,Panchpedwa APMC,Wheat,Dara,FAQ,21/04/2026,2400,2400,2400,monthly,2481.43
+Uttar Pradesh,Barabanki,Safdarganj APMC,Wheat,Other,FAQ,21/04/2026,2400,2400,2400,monthly,2481.43
+Uttar Pradesh,Hardoi,Shahabad(New Mandi) APMC,Wheat,Dara,FAQ,21/04/2026,2350,2350,2350,monthly,2481.43
+Uttar Pradesh,Hathras,Sikandraraau APMC,Wheat,Dara,FAQ,21/04/2026,2400,2425,2413.31,monthly,2481.43
+Madhya Pradesh,Indore,Sanwer APMC,Wheat,Wheat,FAQ,21/04/2026,2025,2400,2311,monthly,2481.43
